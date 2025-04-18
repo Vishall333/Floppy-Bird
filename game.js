@@ -13,7 +13,6 @@ const bottomPipe = new Image();
 topPipe.src = "https://i.imgur.com/lkP7pRD.png";
 bottomPipe.src = "https://i.imgur.com/4bXX9yk.png";
 
-let hoverAngle = 0;
 let bird = {
   x: 50,
   y: 150,
@@ -24,6 +23,7 @@ let bird = {
   velocity: 0
 };
 
+let hoverAngle = 0;
 let pipes = [];
 let pipeWidth = 50;
 let pipeGap = 150;
