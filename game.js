@@ -5,6 +5,9 @@ const ctx = canvas.getContext('2d');
 canvas.width = 400;
 canvas.height = 600;
 
+let birdImage = new Image();
+birdImage.src = 'bird-image.png'; // Bird image
+
 let bird = {
   x: 50,
   y: 150,
@@ -159,9 +162,7 @@ document.getElementById('restartBtn').addEventListener('click', () => {
   resetGame();
 });
 
-// Background image, Bird Image and music preload
-let birdImage = new Image();
-birdImage.src = 'bird-image.png'; // Bird image
+// Background image and music preload
 
 let backgroundImage = new Image();
 backgroundImage.src = 'background.jpg'; // Background image
