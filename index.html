@@ -1,95 +1,23 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Floppy Bird</title>
-  <style>
-    canvas {
-      display: block;
-      margin: 0 auto;
-      background: #70c5ce;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="gameCanvas" width="320" height="480"></canvas>
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+  <div id="startScreen">
+    <h1>Floppy Bird</h1>
+    <button id="startBtn">Play</button>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <div id="gameOverScreen" style="display: none;">
+    <h2>Game Over</h2>
+    <button id="restartBtn">Restart</button>
+  </div>
 
-    const birdImg = new Image();
-    birdImg.src = "https://upload.wikimedia.org/wikipedia/en/0/0b/Flappy_Bird_icon.png"; // Flappy Bird icon
-
-    const pipeNorth = new Image();
-    const pipeSouth = new Image();
-    pipeNorth.src = "https://i.imgur.com/lkP7pRD.png"; // Green top pipe
-    pipeSouth.src = "https://i.imgur.com/4bXX9yk.png"; // Green bottom pipe
-
-    const gap = 85;
-    let constant;
-
-    let birdX = 50;
-    let birdY = 150;
-    const gravity = 1.2; // Slower fall
-    let velocity = 0;
-    const jump = -10; // Controlled jump
-
-    const pipes = [];
-    pipes[0] = {
-      x: canvas.width,
-      y: Math.floor(Math.random() * pipeNorth.height) - pipeNorth.height
-    };
-
-    // Keydown event for jump (keyboard)
-    document.addEventListener("keydown", () => {
-      velocity = jump;
-    });
-
-    // Touch event for jump (mobile)
-    canvas.addEventListener("touchstart", (event) => {
-      event.preventDefault(); // Prevents any other touch events from being triggered (like scrolling)
-      velocity = jump;
-    });
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < pipes.length; i++) {
-        constant = pipeNorth.height + gap;
-        ctx.drawImage(pipeNorth, pipes[i].x, pipes[i].y);
-        ctx.drawImage(pipeSouth, pipes[i].x, pipes[i].y + constant);
-
-        pipes[i].x--;
-
-        if (pipes[i].x === 125) {
-          pipes.push({
-            x: canvas.width,
-            y: Math.floor(Math.random() * pipeNorth.height) - pipeNorth.height
-          });
-        }
-
-        if (
-          birdX + birdImg.width >= pipes[i].x &&
-          birdX <= pipes[i].x + pipeNorth.width &&
-          (birdY <= pipes[i].y + pipeNorth.height ||
-            birdY + birdImg.height >= pipes[i].y + constant)
-        ) {
-          location.reload();
-        }
-      }
-
-      ctx.drawImage(birdImg, birdX, birdY);
-
-      birdY += velocity;
-      velocity += gravity;
-
-      if (birdY + birdImg.height >= canvas.height) {
-        location.reload();
-      }
-
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-  </script>
+  <script src="game.js"></script>
 </body>
 </html>
