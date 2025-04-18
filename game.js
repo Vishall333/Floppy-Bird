@@ -52,7 +52,7 @@ function drawBird() {
   bird.y += bird.velocity;
 
   ctx.fillStyle = 'yellow';
-  ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+  ctx.arc(bird.x, bird.y, bird.width, bird.height);
 }
 
 function drawPipes() {
@@ -160,5 +160,9 @@ document.getElementById('restartBtn').addEventListener('click', () => {
 });
 
 // Background image and music preload
+
+let birdImage = new Image();
+birdImage.src = 'bird-image.png'; // Bird image
+
 let backgroundImage = new Image();
 backgroundImage.src = 'background.jpg'; // Background image
