@@ -18,15 +18,19 @@ let bird = {
 let pipes = [];
 let pipeWidth = 50;
 let pipeGap = 150;
+let pipeSpacing = 180; // increased horizontal gap
 let pipeSpeed = 2;
 let frameCount = 0;
 let score = 0;
 let gameOver = false;
+let gameStarted = false;
+
+let jumpSound = new Audio('jump.mp3');
+let scoreSound = new Audio('score.mp3');
+let crashSound = new Audio('crash.mp3');
 
 function createPipes() {
-  let minPipeHeight = 50;
-  let maxPipeHeight = canvas.height - pipeGap - 50;
-  let topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight;
+  let topPipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 100)) + 50;
   let bottomPipeY = topPipeHeight + pipeGap;
   let bottomPipeHeight = canvas.height - bottomPipeY;
 
@@ -57,6 +61,7 @@ function drawPipes() {
     if (pipe.x + pipe.width <= 0) {
       pipes.splice(index, 1);
       score++;
+      scoreSound.play();
     }
 
     if (
@@ -65,6 +70,8 @@ function drawPipes() {
       (bird.y < pipe.y || bird.y + bird.height > pipe.y + pipeGap)
     ) {
       gameOver = true;
+      crashSound.play();
+      showGameOver();
     }
   });
 }
@@ -76,37 +83,62 @@ function drawScore() {
 }
 
 function gameLoop() {
-  if (gameOver) {
-    ctx.fillStyle = 'red';
-    ctx.font = '30px Arial';
-    ctx.fillText('Game Over!', 100, 250);
-    return;
-  }
+  if (!gameStarted || gameOver) return;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   drawBird();
   drawPipes();
   drawScore();
 
-  if (frameCount % 100 === 0) {
+  if (frameCount % pipeSpacing === 0) {
     createPipes();
   }
 
   if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
     gameOver = true;
+    crashSound.play();
+    showGameOver();
   }
 
   frameCount++;
   requestAnimationFrame(gameLoop);
 }
 
+function resetGame() {
+  bird.y = 150;
+  bird.velocity = 0;
+  pipes = [];
+  score = 0;
+  frameCount = 0;
+  gameOver = false;
+  document.getElementById('gameOverScreen').style.display = 'none';
+  gameStarted = true;
+  gameLoop();
+}
+
+function showGameOver() {
+  document.getElementById('gameOverScreen').style.display = 'block';
+}
+
 document.addEventListener('keydown', () => {
-  bird.velocity = bird.lift;
+  if (gameStarted && !gameOver) {
+    bird.velocity = bird.lift;
+    jumpSound.play();
+  }
 });
 
 document.addEventListener('touchstart', () => {
-  bird.velocity = bird.lift;
+  if (gameStarted && !gameOver) {
+    bird.velocity = bird.lift;
+    jumpSound.play();
+  }
 });
 
-gameLoop();
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('startScreen').style.display = 'none';
+  resetGame();
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  resetGame();
+});
