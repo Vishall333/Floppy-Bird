@@ -20,35 +20,37 @@ let pipeSpeed = 2;
 
 let score = 0;
 let gameOver = false;
-let frameCount = 0;
 
 // Background music (it starts automatically)
-const backgroundMusic = document.getElementById('background-music');
+const backgroundMusic = document.getElementById('audio/background-music');
 
-// Bird movement on key press
-document.addEventListener('keydown', () => {
-  bird.velocity = bird.lift;
+// Bird movement with touch (tap to make the bird jump)
+document.addEventListener('touchstart', (e) => {
+  bird.velocity = bird.lift; // Bird jumps when the screen is tapped
 });
+
+// If you also want to use spacebar for jumping (for desktop compatibility):
+document.addEventListener('keydown', () => {
+  bird.velocity = bird.lift;  // Bird jumps when spacebar is pressed
+});
+
 
 // Bird draw function
 function drawBird() {
   bird.velocity += bird.gravity;
   bird.y += bird.velocity;
-  ctx.fillStyle = 'yellow';
+  ctx.fillStyle = 'green';
   ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 }
 
 // Pipe generation function
 function createPipes() {
-  let topPipeHeight = Math.floor(Math.random() * 250) + 50;
-  let bottomPipeY = topPipeHeight + pipeGap;
-  let bottomPipeHeight = canvas.height - bottomPipeY;
-
+  let pipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap));
   pipes.push({
     x: canvas.width,
-    y: topPipeHeight,
+    y: pipeHeight,
     width: pipeWidth,
-    height: bottomPipeHeight
+    height: canvas.height - pipeHeight - pipeGap
   });
 }
 
@@ -97,16 +99,17 @@ function gameLoop() {
   drawPipes();
   updateScore();
 
-  if (frameCount % 100 === 0) {
-    createPipes(); // Create new pipes every 100 frames
+  if (Math.random() < 0.01) {
+    createPipes(); // Create new pipes randomly
   }
 
   if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
     gameOver = true; // End the game if bird hits ground or top
   }
 
-  frameCount++;
   requestAnimationFrame(gameLoop); // Keep looping the game
 }
 
 gameLoop(); // Start the game
+
+
