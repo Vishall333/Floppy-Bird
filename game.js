@@ -11,7 +11,7 @@ let bird = {
   width: 30,
   height: 30,
   gravity: 0.6,
-  lift: -15,
+  lift: -10,  // Reduced jump height
   velocity: 0
 };
 
@@ -22,12 +22,17 @@ let pipeSpacing = 180; // increased horizontal gap
 let pipeSpeed = 2;
 let frameCount = 0;
 let score = 0;
+let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
 let gameOver = false;
 let gameStarted = false;
 
 let jumpSound = new Audio('jump.mp3');
 let scoreSound = new Audio('score.mp3');
 let crashSound = new Audio('crash.mp3');
+let backgroundMusic = new Audio('background-music.mp3'); // Background music
+
+backgroundMusic.loop = true; // Loop background music
+backgroundMusic.volume = 0.5; // Adjust volume
 
 function createPipes() {
   let topPipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 100)) + 50;
@@ -80,12 +85,16 @@ function drawScore() {
   ctx.fillStyle = 'black';
   ctx.font = '20px Arial';
   ctx.fillText('Score: ' + score, 10, 30);
+
+  ctx.fillText('High Score: ' + highScore, 10, 50);
 }
 
 function gameLoop() {
   if (!gameStarted || gameOver) return;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // Drawing the background image
+
   drawBird();
   drawPipes();
   drawScore();
@@ -117,7 +126,13 @@ function resetGame() {
 }
 
 function showGameOver() {
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('highScore', highScore); // Save new high score
+  }
   document.getElementById('gameOverScreen').style.display = 'block';
+  document.getElementById('finalScore').innerText = 'Final Score: ' + score;
+  document.getElementById('highScore').innerText = 'High Score: ' + highScore;
 }
 
 document.addEventListener('keydown', () => {
@@ -136,9 +151,14 @@ document.addEventListener('touchstart', () => {
 
 document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('startScreen').style.display = 'none';
+  backgroundMusic.play(); // Play background music
   resetGame();
 });
 
 document.getElementById('restartBtn').addEventListener('click', () => {
   resetGame();
 });
+
+// Background image and music preload
+let backgroundImage = new Image();
+backgroundImage.src = 'background.jpg'; // Background image
