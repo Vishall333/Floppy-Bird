@@ -5,6 +5,14 @@ const ctx = canvas.getContext('2d');
 canvas.width = 400;
 canvas.height = 600;
 
+const birdImg = new Image();
+birdImg.src = "bird-image.png"
+
+const topPipe = new Image();
+const bottomPipe = new Image();
+topPipe.src = "https://i.imgur.com/lkP7pRD.png";
+bottomPipe.src = "https://i.imgur.com/4bXX9yk.png";
+
 let bird = {
   x: 50,
   y: 150,
@@ -147,6 +155,11 @@ document.addEventListener('touchstart', () => {
     bird.velocity = bird.lift;
     jumpSound.play();
   }
+});
+
+canvas.addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  velocity = jump;
 });
 
 document.getElementById('startBtn').addEventListener('click', () => {
