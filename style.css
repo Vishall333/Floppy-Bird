@@ -13,10 +13,18 @@ body {
   background-size: cover;
 }
 #startScreen, #gameOverScreen {
-  position: absolute;
-  top: 30%;
-  width: 100%;
-  color: white;
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  color: white;
+  text-shadow: 2px 2px 4px #000;
+  font-size: 24px;
+  z-index: 10;
+}
+button:hover {
+  background-color: #ffdb4d;
+  transform: scale(1.05);
+  transition: 0.2s;
 }
 button {
   padding: 10px 20px;
