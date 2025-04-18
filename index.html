@@ -1,23 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flappy Bird</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Floppy Bird</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="game-container">
-    <canvas id="gameCanvas"></canvas>
-    <div class="score-board">
-      <p>Score: <span id="score">0</span></p>
-    </div>
+  <div id="startScreen">
+    <h1>Floppy Bird</h1>
+    <button id="startBtn">Play</button>
   </div>
-
-  <!-- Background music -->
-  <audio id="background-music" loop autoplay>
-    <source src="background-music.mp3" type="audio/mp3">
-  </audio>
+  <canvas id="gameCanvas"></canvas>
+  <div id="gameOverScreen" style="display: none;">
+    <h2>Game Over</h2>
+    <button id="restartBtn">Restart</button>
+  </div>
 
   <script src="game.js"></script>
 </body>
