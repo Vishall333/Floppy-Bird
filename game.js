@@ -5,9 +5,6 @@ const ctx = canvas.getContext('2d');
 canvas.width = 400;
 canvas.height = 600;
 
-let birdImage = new Image();
-birdImage.src = 'bird-image.png'; // Bird image
-
 let bird = {
   x: 50,
   y: 150,
@@ -55,7 +52,7 @@ function drawBird() {
   bird.y += bird.velocity;
 
   ctx.fillStyle = 'yellow';
-  ctx.fillrect(bird.x, bird.y, bird.width, bird.height);
+  ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 }
 
 function drawPipes() {
@@ -163,6 +160,5 @@ document.getElementById('restartBtn').addEventListener('click', () => {
 });
 
 // Background image and music preload
-
 let backgroundImage = new Image();
 backgroundImage.src = 'background.jpg'; // Background image
