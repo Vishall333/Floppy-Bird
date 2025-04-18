@@ -20,9 +20,10 @@ let pipeSpeed = 2;
 
 let score = 0;
 let gameOver = false;
+let frameCount = 0;
 
 // Background music (it starts automatically)
-const backgroundMusic = document.getElementById('audio/background-music');
+const backgroundMusic = document.getElementById('background-music');
 
 // Bird movement on key press
 document.addEventListener('keydown', () => {
@@ -39,12 +40,15 @@ function drawBird() {
 
 // Pipe generation function
 function createPipes() {
-  let pipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap));
+  let topPipeHeight = Math.floor(Math.random() * 250) + 50;
+  let bottomPipeY = topPipeHeight + pipeGap;
+  let bottomPipeHeight = canvas.height - bottomPipeY;
+
   pipes.push({
     x: canvas.width,
-    y: pipeHeight,
+    y: topPipeHeight,
     width: pipeWidth,
-    height: canvas.height - pipeHeight - pipeGap
+    height: bottomPipeHeight
   });
 }
 
@@ -93,17 +97,16 @@ function gameLoop() {
   drawPipes();
   updateScore();
 
-  if (Math.random() < 0.01) {
-    createPipes(); // Create new pipes randomly
+  if (frameCount % 100 === 0) {
+    createPipes(); // Create new pipes every 100 frames
   }
 
   if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
     gameOver = true; // End the game if bird hits ground or top
   }
 
+  frameCount++;
   requestAnimationFrame(gameLoop); // Keep looping the game
 }
 
 gameLoop(); // Start the game
-
-
